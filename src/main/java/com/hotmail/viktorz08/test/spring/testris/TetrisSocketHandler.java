@@ -1,5 +1,6 @@
 package com.hotmail.viktorz08.test.spring.testris;
 
+import com.hotmail.viktorz08.test.spring.testris.block.BlockFactory;
 import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class TetrisSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        this.tetrisBlock = TetrisUtils.getRandomForm(this.id, session);
+        this.tetrisBlock = BlockFactory.createBlock(this.id, session);
 
         TetrisTimer.addBlock(this.tetrisBlock);
 

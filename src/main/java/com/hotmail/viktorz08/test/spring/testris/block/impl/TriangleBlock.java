@@ -1,7 +1,8 @@
-package com.hotmail.viktorz08.test.spring.testris.block;
+package com.hotmail.viktorz08.test.spring.testris.block.impl;
 
 import com.hotmail.viktorz08.test.spring.testris.Direction;
 import com.hotmail.viktorz08.test.spring.testris.Location;
+import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.WebSocketSession;
@@ -18,17 +19,13 @@ public class TriangleBlock extends TetrisBlock {
 
     @Override
     protected void fillForm() {
-        Collection<Location> tail = this.getTail();
+        Collection<Location> tail = this.getBlockParts();
         Location head = this.getHead();
         tail.add(head);
 
-        Location nextLocation = head.getAdjacentLocation(Direction.EAST);
-        tail.add(nextLocation);
-
-        nextLocation = head.getAdjacentLocation(Direction.WEST);
-        tail.add(nextLocation);
-
-        nextLocation = head.getAdjacentLocation(Direction.NORTH);
-        tail.add(nextLocation);
+        addHeadPart(tail, head, Direction.EAST);
+        addHeadPart(tail, head, Direction.WEST);
+        addHeadPart(tail, head, Direction.NORTH);
     }
+
 }

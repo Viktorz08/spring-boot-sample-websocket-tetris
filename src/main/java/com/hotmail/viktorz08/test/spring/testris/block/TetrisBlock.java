@@ -116,7 +116,7 @@ public abstract class TetrisBlock {
     private void handleCollisions(Collection<TetrisBlock> blocks) throws Exception {
         for (TetrisBlock block : blocks) {
             boolean headCollision = this.id != block.id && block.getHead().equals(this.head);
-            boolean tailCollision = block.getTail().contains(this.head);
+            boolean tailCollision = block.getBlockParts().contains(this.head);
             if (headCollision || tailCollision) {
                 kill();
                 if (this.id != block.id) {
@@ -132,7 +132,7 @@ public abstract class TetrisBlock {
         }
     }
 
-    public Collection<Location> getTail() {
+    public Collection<Location> getBlockParts() {
         synchronized (this.monitor) {
             return this.tail;
         }
@@ -164,4 +164,17 @@ public abstract class TetrisBlock {
         return this.hexColor;
     }
 
+    protected Location addBodyPart(Collection<Location> bodyParts, Location nextPart, Direction direction) {
+        nextPart = nextPart.getAdjacentLocation(direction);
+        bodyParts.add(nextPart);
+
+        return nextPart;
+    }
+
+    protected Location addHeadPart(Collection<Location> tail, Location head, Direction direction) {
+        Location nextLocation = head.getAdjacentLocation(direction);
+        tail.add(nextLocation);
+
+        return nextLocation;
+    }
 }
