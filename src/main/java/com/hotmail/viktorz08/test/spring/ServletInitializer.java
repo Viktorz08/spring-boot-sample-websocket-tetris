@@ -15,7 +15,7 @@ import org.springframework.web.socket.handler.PerConnectionWebSocketHandler;
 
 @Configuration
 @EnableWebSocket
-public class ServletInitializer extends SpringBootServletInitializer implements WebSocketConfigurer{
+public class ServletInitializer extends SpringBootServletInitializer implements WebSocketConfigurer {
     private static final Logger LOG = LoggerFactory.getLogger(ServletInitializer.class);
 
 
@@ -26,7 +26,7 @@ public class ServletInitializer extends SpringBootServletInitializer implements 
 
 
     @Bean
-    protected WebSocketHandler tetrisWebSocketHandler(){
+    protected WebSocketHandler tetrisWebSocketHandler() {
         return new PerConnectionWebSocketHandler(TetrisSocketHandler.class);
     }
 

@@ -1,29 +1,33 @@
-package com.hotmail.viktorz08.test.spring.testris.block.impl;
+package com.hotmail.viktorz08.test.spring.testris.block;
 
 import com.hotmail.viktorz08.test.spring.testris.Direction;
 import com.hotmail.viktorz08.test.spring.testris.Location;
-import com.hotmail.viktorz08.test.spring.testris.block.AbstractTetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
 public class LightningBlock extends AbstractTetrisBlock {
-
     private static final Logger LOG = LoggerFactory.getLogger(LightningBlock.class);
 
     public LightningBlock(int id) {
         super(id);
     }
 
+
     @Override
     protected void fillForm() {
-        Collection<Location> locations = this.getBlockParts();
+        Collection<Location> tail = this.getBlockParts();
         Location nextLocation = this.getHead();
-        locations.add(nextLocation);
+        tail.add(nextLocation);
 
-        nextLocation = addBodyPart(locations, nextLocation, Direction.NORTH);
-        nextLocation = addBodyPart(locations, nextLocation, Direction.EAST);
-        addBodyPart(locations, nextLocation, Direction.NORTH);
+        nextLocation = nextLocation.getAdjacentLocation(Direction.EAST);
+        tail.add(nextLocation);
+
+        nextLocation = nextLocation.getAdjacentLocation(Direction.NORTH);
+        tail.add(nextLocation);
+
+        nextLocation = nextLocation.getAdjacentLocation(Direction.WEST);
+        tail.add(nextLocation);
     }
 }

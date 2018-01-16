@@ -2,20 +2,19 @@ package com.hotmail.viktorz08.test.spring.testris.block.impl;
 
 import com.hotmail.viktorz08.test.spring.testris.Direction;
 import com.hotmail.viktorz08.test.spring.testris.Location;
-import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
+import com.hotmail.viktorz08.test.spring.testris.block.AbstractTetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Collection;
 
-public class LineBlock extends TetrisBlock {
+public class LineBlock extends AbstractTetrisBlock {
     private static final Logger LOG = LoggerFactory.getLogger(LineBlock.class);
 
     private static final int LINE_BLOCK_SIZE = 4;
 
-    public LineBlock(int id, WebSocketSession session) {
-        super(id, session);
+    public LineBlock(int id) {
+        super(id);
     }
 
     @Override

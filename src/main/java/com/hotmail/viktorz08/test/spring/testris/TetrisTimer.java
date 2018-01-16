@@ -1,5 +1,6 @@
 package com.hotmail.viktorz08.test.spring.testris;
 
+import com.hotmail.viktorz08.test.spring.testris.block.AbstractTetrisBlock;
 import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ public class TetrisTimer {
         StringBuilder sb = new StringBuilder();
         for (Iterator<TetrisBlock> iterator = TetrisTimer.getBlocks().iterator(); iterator.hasNext(); ) {
             TetrisBlock block = iterator.next();
-            block.update(TetrisTimer.getBlocks());
+            ((AbstractTetrisBlock) block).update(TetrisTimer.getBlocks());
             sb.append(block.getLocationsJson());
             if (iterator.hasNext()) {
                 sb.append(',');
@@ -60,9 +61,9 @@ public class TetrisTimer {
         Collection<TetrisBlock> blocks = new CopyOnWriteArrayList<>(TetrisTimer.getBlocks());
         for (TetrisBlock block : blocks) {
             try {
-                block.sendMessage(message);
+                ((AbstractTetrisBlock) block).sendMessage(message);
             } catch (Throwable ex) {
-                // if TetrisBlock#sendMessage fails the client is removed
+                // if AbstractTetrisBlock#sendMessage fails the client is removed
                 removeBlock(block);
             }
         }

@@ -1,36 +1,34 @@
 package com.hotmail.viktorz08.test.spring.testris;
 
-import com.hotmail.viktorz08.test.spring.testris.block.BlockFactory;
 import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.Iterator;
-import java.util.concurrent.atomic.AtomicInteger;
 
-
+@Component
 public class TetrisSocketHandler extends TextWebSocketHandler {
     private static final Logger LOG = LoggerFactory.getLogger(TetrisSocketHandler.class);
 
-    private static final AtomicInteger blockIds = new AtomicInteger(0);
-
-    private final int id;
+    @Autowired
     private TetrisBlock tetrisBlock;
-
-    public TetrisSocketHandler() {
-        this.id = blockIds.getAndIncrement();
-    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        this.tetrisBlock = BlockFactory.createBlock(this.id, session);
-
         TetrisTimer.addBlock(this.tetrisBlock);
+        this.tetrisBlock.setSession(session);
 
+        String joinMessage = createJoinMessage();
+        TetrisTimer.broadcast(String.format("{'type': 'join','data':[%s]}", joinMessage));
+    }
+
+    private String createJoinMessage() {
         StringBuilder sb = new StringBuilder();
         for (Iterator<TetrisBlock> iterator = TetrisTimer.getBlocks().iterator(); iterator.hasNext(); ) {
             TetrisBlock block = iterator.next();
@@ -40,7 +38,7 @@ public class TetrisSocketHandler extends TextWebSocketHandler {
             }
         }
 
-        TetrisTimer.broadcast(String.format("{'type': 'join','data':[%s]}", sb.toString()));
+        return sb.toString();
     }
 
     @Override
@@ -56,7 +54,7 @@ public class TetrisSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         TetrisTimer.removeBlock(this.tetrisBlock);
-        TetrisTimer.broadcast(String.format("{'type': 'leave', 'id': %d}", this.id));
+        TetrisTimer.broadcast(String.format("{'type': 'leave', 'id': %d}", this.tetrisBlock.getId()));
     }
 
 }
