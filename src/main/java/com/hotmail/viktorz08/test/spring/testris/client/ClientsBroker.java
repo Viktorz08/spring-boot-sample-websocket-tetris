@@ -1,7 +1,6 @@
 package com.hotmail.viktorz08.test.spring.testris.client;
 
 import com.hotmail.viktorz08.test.spring.testris.TetrisTimer;
-import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,27 +11,27 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientsBroker {
     private static final Logger LOG = LoggerFactory.getLogger(ClientsBroker.class);
 
-    private static final ConcurrentHashMap<Integer, TetrisBlock> blocks = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<Integer, Client> clients = new ConcurrentHashMap<>();
 
     private static final Object MONITOR = new Object();
 
-    public static void addBlock(TetrisBlock block) {
+    public static void addClient(Client client) {
         synchronized (MONITOR) {
-            if (blocks.isEmpty()) {
+            if (clients.isEmpty()) {
                 TetrisTimer.startTimer();
             }
-            blocks.put(block.getId(), block);
+            clients.put(client.getId(), client);
         }
     }
 
-    public static Collection<TetrisBlock> getBlocks() {
-        return Collections.unmodifiableCollection(blocks.values());
+    public static Collection<Client> getClients() {
+        return Collections.unmodifiableCollection(clients.values());
     }
 
-    public static void removeBlock(TetrisBlock block) {
+    public static void removeClient(Client client) {
         synchronized (MONITOR) {
-            blocks.remove(block.getId());
-            if (blocks.isEmpty()) {
+            clients.remove(client.getId());
+            if (clients.isEmpty()) {
                 TetrisTimer.stopTimer();
             }
         }

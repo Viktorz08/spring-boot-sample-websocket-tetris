@@ -1,8 +1,6 @@
 package com.hotmail.viktorz08.test.spring.testris.client;
 
 import com.hotmail.viktorz08.test.spring.testris.block.AbstractTetrisBlock;
-import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
-import com.hotmail.viktorz08.test.spring.testris.client.ClientsBroker;
 import com.hotmail.viktorz08.test.spring.testris.client.service.ClientNotificationService;
 import com.hotmail.viktorz08.test.spring.testris.location.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class ClientService {
+
     @Autowired
-    TetrisBlock tetrisBlock;
+    Client client;
 
     public static void updateGame() {
         String broadcastUpdate = ClientNotificationService.getBroadcastUpdate();
@@ -26,20 +25,20 @@ public class ClientService {
     }
 
     protected static void broadcast(String message) {
-        Collection<TetrisBlock> blocks = new CopyOnWriteArrayList<>(ClientsBroker.getBlocks());
-        for (TetrisBlock block : blocks) {
+        Collection<Client> clients = new CopyOnWriteArrayList<>(ClientsBroker.getClients());
+        for (Client client : clients) {
             try {
-                ((AbstractTetrisBlock) block).sendMessage(message);
+                ((AbstractTetrisBlock) client.getTetrisBlock()).sendMessage(message);
             } catch (Throwable ex) {
                 // if AbstractTetrisBlock#sendMessage fails the client is removed
-                ClientsBroker.removeBlock(block);
+                ClientsBroker.removeClient(client);
             }
         }
     }
 
     public void joinGame(WebSocketSession session) {
-        ClientsBroker.addBlock(this.tetrisBlock);
-        this.tetrisBlock.setSession(session);
+        ClientsBroker.addClient(this.client);
+        this.client.setSession(session);
 
         String introduceMessage = ClientNotificationService.getBroadcastIntroduceMessage();
         broadcast(introduceMessage);
@@ -48,13 +47,13 @@ public class ClientService {
     public void handleAction(String payload) {
         Direction direction = Direction.fromDirection(payload);
         if (direction != null) {
-            this.tetrisBlock.setDirection(direction);
+            this.client.getTetrisBlock().setDirection(direction);
         }
     }
 
     public void leaveGame() {
-        ClientsBroker.removeBlock(this.tetrisBlock);
-        String leaveMessage = ClientNotificationService.getLeaveMessage(this.tetrisBlock);
+        ClientsBroker.removeClient(this.client);
+        String leaveMessage = ClientNotificationService.getLeaveMessage(this.client);
         broadcast(leaveMessage);
     }
 }
