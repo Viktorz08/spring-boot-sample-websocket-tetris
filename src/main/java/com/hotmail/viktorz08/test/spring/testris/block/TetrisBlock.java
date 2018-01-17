@@ -1,7 +1,7 @@
 package com.hotmail.viktorz08.test.spring.testris.block;
 
-import com.hotmail.viktorz08.test.spring.testris.Direction;
-import com.hotmail.viktorz08.test.spring.testris.Location;
+import com.hotmail.viktorz08.test.spring.testris.location.Direction;
+import com.hotmail.viktorz08.test.spring.testris.location.Location;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.Collection;

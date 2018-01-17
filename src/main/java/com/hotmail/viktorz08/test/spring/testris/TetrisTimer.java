@@ -1,6 +1,7 @@
 package com.hotmail.viktorz08.test.spring.testris;
 
 import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
+import com.hotmail.viktorz08.test.spring.testris.client.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

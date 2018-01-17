@@ -1,4 +1,4 @@
-package com.hotmail.viktorz08.test.spring.testris;
+package com.hotmail.viktorz08.test.spring.testris.location;
 
 public enum Direction {
     NONE("none"),

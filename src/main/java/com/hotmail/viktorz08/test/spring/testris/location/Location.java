@@ -1,4 +1,4 @@
-package com.hotmail.viktorz08.test.spring.testris;
+package com.hotmail.viktorz08.test.spring.testris.location;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

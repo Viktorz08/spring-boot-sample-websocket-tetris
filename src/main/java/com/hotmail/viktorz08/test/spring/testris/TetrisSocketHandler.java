@@ -1,5 +1,6 @@
 package com.hotmail.viktorz08.test.spring.testris;
 
+import com.hotmail.viktorz08.test.spring.testris.client.ClientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

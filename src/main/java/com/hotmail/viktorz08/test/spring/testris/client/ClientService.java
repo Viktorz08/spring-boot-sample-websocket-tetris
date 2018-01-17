@@ -1,9 +1,10 @@
-package com.hotmail.viktorz08.test.spring.testris;
+package com.hotmail.viktorz08.test.spring.testris.client;
 
 import com.hotmail.viktorz08.test.spring.testris.block.AbstractTetrisBlock;
 import com.hotmail.viktorz08.test.spring.testris.block.TetrisBlock;
 import com.hotmail.viktorz08.test.spring.testris.client.ClientsBroker;
 import com.hotmail.viktorz08.test.spring.testris.client.service.ClientNotificationService;
+import com.hotmail.viktorz08.test.spring.testris.location.Direction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
